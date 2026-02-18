@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Stopwatch Simpel</title>
+    <style>
+        /* ini gaya buat teks dan background */
+        body {
+            font-family: 'Courier New', monospace;
+            text-align: center;
+            background-color: #f0f8ff;
+            padding-top: 50px;
+        }
+
+        /* kotak angkanya */
+        #display {
+            font-size: 60px;
+            margin-bottom: 20px;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            display: inline-block;
+            border: 2px solid #ccc;
+        }
+
+        /* gaya tombolnya */
+        button {
+            padding: 10px 20px;
+            font-size: 18px;
+            cursor: pointer;
+            margin: 5px;
+            border-radius: 5px;
+            border: 1px solid #888;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="display">
+        <span id="hours">00</span>:<span id="minutes">00</span>:<span id="seconds">00</span>:<span id="tens">00</span>
+    </div>
+
+    <br>
+
+    <button id="btn-start">Start</button>
+    <button id="btn-stop">Stop</button>
+    <button id="btn-reset">Reset</button>
+
+    <script>
+        // --- variabel buat nyimpen angka ---
+        var hours = 0;
+        var minutes = 0;
+        var seconds = 0; 
+        var tens = 0; 
+        var Interval; // ini buat nyimpen timer-nya nanti
+
+        // --- ambil elemen dari html biar bisa diubah angkanya ---
+        var appendHours = document.getElementById("hours");
+        var appendMinutes = document.getElementById("minutes");
+        var appendSeconds = document.getElementById("seconds");
+        var appendTens = document.getElementById("tens");
+
+        // --- pas tombol start diklik ---
+        document.getElementById('btn-start').onclick = function() {
+            clearInterval(Interval); // matiin dulu biar gak dobel jalan
+            Interval = setInterval(startTimer, 10); // jalanin fungsi startTimer tiap 10 milidetik
+        }
+
+        // --- pas tombol stop diklik ---
+        document.getElementById('btn-stop').onclick = function() {
+            clearInterval(Interval); // setop hitungannya
+        }
+
+        // --- pas tombol reset diklik ---
+        document.getElementById('btn-reset').onclick = function() {
+            clearInterval(Interval); // setop dulu
+            // balikin semua angka jadi 0
+            tens = 0;
+            seconds = 0;
+            minutes = 0;
+            hours = 0;
+            // ubah tampilan di layar jadi 00 semua
+            appendTens.innerHTML = "00";
+            appendSeconds.innerHTML = "00";
+            appendMinutes.innerHTML = "00";
+            appendHours.innerHTML = "00";
+        }
+
+        // --- logika hitung-itungannya di sini ---
+        function startTimer() {
+            tens++; // nambahin 1 ke milidetik
+            
+            // kalau angkanya cuma satu digit, tambahin "0" di depannya biar rapi
+            if(tens <= 9){
+                appendTens.innerHTML = "0" + tens;
+            }
+            
+            if (tens > 9){
+                appendTens.innerHTML = tens;
+            } 
+            
+            // kalo milidetik udah sampe 100 (artinya 1 detik)
+            if (tens > 99) {
+                seconds++; // detik nambah 1
+                appendSeconds.innerHTML = "0" + seconds;
+                tens = 0; // reset milidetik jadi 0
+                appendTens.innerHTML = "00";
+            }
+            
+            // rapihin tampilan detik
+            if (seconds > 9){
+                appendSeconds.innerHTML = seconds;
+            }
+
+            // kalo detik udah sampe 60 (artinya 1 menit)
+            if (seconds > 59) {
+                minutes++; // menit nambah 1
+                appendMinutes.innerHTML = "0" + minutes;
+                seconds = 0; // reset detik
+                appendSeconds.innerHTML = "00";
+            }
+
+            // rapihin tampilan menit
+            if (minutes > 9){
+                appendMinutes.innerHTML = minutes;
+            }
+
+            // kalo menit udah sampe 60 (artinya 1 jam)
+            if (minutes > 59) {
+                hours++; // jam nambah 1
+                appendHours.innerHTML = "0" + hours;
+                minutes = 0; // reset menit
+                appendMinutes.innerHTML = "00";
+            }
+
+            // rapihin tampilan jam
+            if (hours > 9){
+                appendHours.innerHTML = hours;
+            }
+        }
+    </script>
+</body>
+</html>
